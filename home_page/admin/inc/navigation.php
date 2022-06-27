@@ -28,6 +28,97 @@
           <nav class="mt-4">
             <ul class="nav nav-pills nav-sidebar flex-column text-sm nav-compact nav-flat nav-child-indent nav-collapse-hide-child" data-widget="treeview" role="menu" data-accordion="false">
               <li class="nav-item dropdown">
+                <a href="./" class="nav-link nav-home">
+                  <i class="nav-icon fas fa-tachometer-alt"></i>
+                  <p>
+                    Dashboard
+                  </p>
+                </a>
+              </li>
+              <li class="nav-header">Market Settings</li>
+              <li class="nav-item dropdown">
+                <a href="<?php echo base_url ?>admin/?page=maintenance/category" class="nav-link nav-maintenance/category">
+                  <i class="nav-icon fas fa-th-list"></i>
+                  <p>
+                    Category List
+                  </p>
+                </a>
+              </li>
+              <li class="nav-item dropdown">
+                <a href="<?php echo base_url ?>admin/?page=maintenance/sub_category" class="nav-link nav-maintenance/sub_category">
+                  <i class="nav-icon fas fa-th-list"></i>
+                  <p>
+                    Sub Category List
+                  </p>
+                </a>
+              </li>
+              <li class="nav-item dropdown">
+                <a href="<?php echo base_url ?>admin/?page=product" class="nav-link nav-product">
+                  <i class="nav-icon fas fa-book-open"></i>
+                  <p>
+                    Product List
+                  </p>
+                </a>
+              </li>
+              <li class="nav-item dropdown">
+                <a href="<?php echo base_url ?>admin/?page=inventory" class="nav-link nav-inventory">
+                  <i class="nav-icon fas fa-clipboard-list"></i>
+                  <p>
+                    Inventory List
+                  </p>
+                </a>
+              </li>
+              <li class="nav-item dropdown">
+                <a href="<?php echo base_url ?>admin/?page=orders" class="nav-link nav-orders">
+                  <i class="nav-icon fas fa-list"></i>
+                  <p>
+                    Order List
+                  </p>
+                </a>
+              </li>
+              <li class="nav-item dropdown">
+                <a href="<?php echo base_url ?>admin/?page=apriori" class="nav-link nav-apriori">
+                  <i class="nav-icon fas fa-chart-area"></i>
+                  <p>
+                    Apriori Algorithm
+                  </p>
+                </a>
+              </li>
+              <li class="nav-item dropdown">
+                <a href="<?php echo base_url ?>admin/?page=sales" class="nav-link nav-sales">
+                  <i class="nav-icon fas fa-shopping-cart"></i>
+                  <p>
+                    Sales Report
+                  </p>
+                </a>
+              </li>
+              <li class="nav-header">Booking Settings</li>
+              <li class="nav-item dropdown">
+                <a href="<?php echo base_url ?>admin/?page=packages" class="nav-link nav-packages">
+                  <i class="nav-icon fas fa-map-marked"></i>
+                  <p>
+                    Packages
+                  </p>
+                </a>
+              </li>
+              <li class="nav-item dropdown">
+                <a href="<?php echo base_url ?>admin/?page=books" class="nav-link nav-books">
+                  <i class="nav-icon fas fa-th-list"></i>
+                  <p>
+                    Bookings
+                  </p>
+                </a>
+              </li>
+              <li class="nav-item dropdown">
+                <a href="<?php echo base_url ?>admin/?page=review" class="nav-link nav-review">
+                  <i class="nav-icon fas fa-comment-alt"></i>
+                  <p>
+                    Rate & Reviews
+                  </p>
+                </a>
+              </li>
+              <li class="nav-header">Home Page</li>
+              <li class="nav-item dropdown">
                 <a href="<?php echo base_url ?>admin/?page=announcement" class="nav-link nav-announcement">
                   <i class="nav-icon fas fa-bullhorn"></i>
                   <p>
@@ -114,7 +205,7 @@
 </aside>
 <script>
   $(document).ready(function() {
-    var page = '<?php echo isset($_GET['page']) ? $_GET['page'] : 'announcement' ?>';
+    var page = '<?php echo isset($_GET['page']) ? $_GET['page'] : 'home' ?>';
     var s = '<?php echo isset($_GET['s']) ? $_GET['s'] : '' ?>';
     page = page.split('/');
     page = page[0];

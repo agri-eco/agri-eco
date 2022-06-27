@@ -63,13 +63,30 @@
           </a>
 
           <a href="./?p=my_account" class="text-dark  nav-link"><b> Hi, <?php echo $_settings->userdata('firstname') ?>!</b></a>
-          <a href="logout.php" class="text-dark  nav-link"><i class="fa fa-sign-out-alt"></i></a>
+          <a href="javascript:void(0)" class="text-dark logout nav-link ml-3"><i class="fa fa-sign-out-alt"> </i></a>
+
+          <!-- <a href="logout.php" class="text-dark  nav-link"><i class="fa fa-sign-out-alt"></i></a> -->
         <?php endif; ?>
       </div>
     </div>
   </div>
 </nav>
 <script>
+  $(document).ready(function() {
+    $('.logout').click(function() {
+      _conf("Are you sure to Log out of session?", "delete_user")
+    })
+    $('.table').dataTable();
+  })
+
+  function delete_user() {
+    $.ajax({
+      url: _base_url_ + "logout.php",
+      success: function() {
+        location.reload();
+      }
+    })
+  }
   $(function() {
     $('#login-btn').click(function() {
       uni_modal("", "login.php")

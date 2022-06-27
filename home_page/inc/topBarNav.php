@@ -12,7 +12,7 @@
         <li class="nav-item"><a class="nav-link" aria-current="page" href="./">Home</a></li>
         <li class="nav-item"><a class="nav-link" aria-current="page" href="./?p=tour1">Map</a></li>
         <li class="nav-item"><a class="nav-link" aria-current="page" href="<?php echo base_url . '../cvsu_retail'; ?>">Retail Market</a></li>
-        <li class="nav-item"><a class="nav-link" aria-current="page" href="<?php echo base_url . '../reservation'; ?>">Reservation</a></li>
+        <li class="nav-item"><a class="nav-link" aria-current="page" href="./?p=packages">Reservation</a></li>
         <li class="nav-item"><a class="nav-link" href="./?p=contact1">Contact Us</a></li>
         <li class="nav-item"><a class="nav-link" href="./?p=about">About</a></li>
       </ul>
@@ -20,15 +20,34 @@
         <?php if (!isset($_SESSION['userdata']['id'])) : ?>
           <button class="btn btn-outline-dark ml-2" id="login-btn" type="button">Login</button>
         <?php else : ?>
-
           <a href="./?p=my_account" class="text-dark  nav-link"><b> Hi, <?php echo $_settings->userdata('firstname') ?>! </b></a>
-          <a href="logout.php" class="text-dark  nav-link ml-3"><i class="fa fa-sign-out-alt"> </i></a>
+          <a href="javascript:void(0)" class="text-dark logout nav-link ml-3"><i class="fa fa-sign-out-alt"> </i></a>
+
+          <!-- <a href="logout.php" class="text-dark  nav-link ml-3"><i class="fa fa-sign-out-alt"> </i></a> -->
         <?php endif; ?>
       </div>
     </div>
   </div>
 </nav>
 <script>
+  $(document).ready(function() {
+    $('.logout').click(function() {
+      _conf("Are you sure to Log out of session?", "delete_user")
+    })
+    $('.table').dataTable();
+  })
+
+  function delete_user() {
+    $.ajax({
+      url: _base_url_ + "logout.php",
+      success: function() {
+        alert_toast("Logout Successful", 'success');
+        setTimeout(() => {
+          location.reload()
+        }, 1000);
+      }
+    })
+  }
   $(function() {
     $('#login-btn').click(function() {
       uni_modal("", "login.php")
@@ -40,12 +59,5 @@
       if ($('body').offset.top == 0)
         $('#mainNav').removeClass('navbar-shrink')
     })
-  })
-
-  $('#search-form').submit(function(e) {
-    e.preventDefault()
-    var sTxt = $('[name="search"]').val()
-    if (sTxt != '')
-      location.href = './?p=products&search=' + sTxt;
   })
 </script>

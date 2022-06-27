@@ -274,7 +274,7 @@
                                                             echo "active";
                                                         } ?>">
                                  <div class="parent justify-content-center pt-2">
-                                     <img src="<?php echo base_url . ($row['upload_path'] . '/' . $row['image_name']) ?>" style="width:350px; height:300px;" alt="Nothing to see here.">
+                                     <img src="<?php echo base_url . ($row['upload_path'] . '/' . $row['image_name']) ?>" style="max-width:400px; max-height:300px;" alt="Nothing to see here.">
                                      <div>
                                          <h5 style="color: black;"><?php echo stripslashes(html_entity_decode($row['description'])); ?></h5>
                                      </div>

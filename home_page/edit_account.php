@@ -5,7 +5,7 @@
             <div class=" justify-content-between d-flex">
                 <h4><b>Update Account Details</b></h4>
                 <a href="./?p=my_account" class="btn btn btn-dark btn-flat">
-                    <div class="fa fa-angle-left"></div> Back to Order List
+                    <div class="fa fa-angle-left"></div> Back to Transactions
                 </a>
             </div>
         </div>

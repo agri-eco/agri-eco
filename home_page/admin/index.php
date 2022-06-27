@@ -8,7 +8,7 @@
     <?php require_once('inc/topBarNav.php') ?>
     <?php require_once('inc/navigation.php') ?>
 
-    <!-- <?php $page = isset($_GET['page']) ? $_GET['page'] : 'announcement';  ?> -->
+    <!-- <?php $page = isset($_GET['page']) ? $_GET['page'] : 'home';  ?> -->
     <!-- Content Wrapper. Contains page content -->
     <div class="content-wrapper bg-dark" style="min-height: 567.854px;">
 

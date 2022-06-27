@@ -11251,3 +11251,30 @@ section#contact form#contactForm :-ms-input-placeholder {
     margin: none !important;
     line-height: 19px !important;
 }
+.cart-prod-img {
+    height: 15vh;
+    width: 15vw;
+    object-fit: contain;
+}
+.cart-qty {
+    width: 3vw !important;
+}
+
+.cart-qty::-webkit-outer-spin-button,
+.cart-qty::-webkit-inner-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
+}
+
+input.cart-qty[type=number] {
+    -moz-appearance: textfield;
+}
+
+@media (max-width:900px) {
+    .navbar>.container {
+        justify-content: center !important;
+    }
+    .row {
+        display: block !important;
+    }
+}

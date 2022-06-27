@@ -434,7 +434,7 @@ class Master extends DBConnection
 				$mail->Host = "smtp.gmail.com";
 				$mail->SMTPAuth = true;
 				$mail->Username = "try.acc1two3@gmail.com";
-				$mail->Password = 'fmbgcsbbqoostpvh';
+				$mail->Password = 'uvjwbxfcwvpuxjjn';
 				$mail->Port = 465; //587
 				$mail->SMTPSecure = "ssl"; //tls
 
