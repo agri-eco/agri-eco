@@ -14,6 +14,7 @@ if (isset($_GET['id'])) {
 </style>
 <p><b>Package:</b> <?php echo $title ?></p>
 <p><b>Details:</b> <span class="truncate"><?php echo strip_tags(stripslashes(html_entity_decode($description))) ?></span></p>
+<p><b>Number of Pax:</b> <span class="truncate"><?php echo strip_tags(stripslashes(html_entity_decode($pax))) ?></span></p>
 <p><b>Package Inclusion:</b><span class="truncate"><?php echo strip_tags(stripslashes(html_entity_decode($unli))) ?><br><?php echo strip_tags(stripslashes(html_entity_decode($inclusion))) ?></span></p>
 <p>
     <b>Schedule</b>

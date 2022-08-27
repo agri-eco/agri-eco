@@ -20,7 +20,7 @@
 							unset($img[$k]);
 						$cover = isset($img[2]) ? 'uploads/package_' . $row['id'] . '/' . $img[2] : "";
 					}
-					$row['description'] = strip_tags(stripslashes(html_entity_decode($row['description'])));
+					// $row['description'] = strip_tags(stripslashes(html_entity_decode($row['description'])));
 					$review = $conn->query("SELECT * FROM `rate_review` where package_id='{$row['id']}'");
 					$review_count = $review->num_rows;
 					$rate = 0;
@@ -46,7 +46,8 @@
 									</div>
 								</form>
 							</div>
-							<p class="card-text truncate"><?php echo $row['description'] ?></p>
+							<div class=" truncate"><?php echo stripslashes(html_entity_decode($row['description'])) ?></div>
+							<!-- <p class="card-text truncate"><?php echo stripslashes(html_entity_decode($row['description'])) ?></p> -->
 							<div class="w-100 d-flex justify-content-between">
 								<span class="rounded-0 btn btn-flat btn-sm btn-primary"><i class="fa fa-tag"></i> <?php echo number_format($row['cost']) ?></span>
 								<a href="./?p=view_package&id=<?php echo md5($row['id']) ?>" class="btn btn-sm btn-flat btn-warning">View Package <i class="fa fa-arrow-right"></i></a>

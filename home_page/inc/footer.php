@@ -62,15 +62,17 @@
 <footer class="footer py-4 ">
   <div class="container" style="background: none;">
     <div class="row align-items-center">
-      <div class="col-lg-4 text-lg-start">Copyright &copy; <?php echo $_settings->info('short_name') ?> 2022</div>
+      <div class="col-lg-4 text-lg-start fa">Copyright &copy; <?php echo $_settings->info('short_name') ?> 2022 <span class='fa fa-phone'> (046) 482 4385 </span>
+      </div>
       <div class="col-lg-4 my-3 my-lg-0">
         <a class="btn btn-dark btn-social mx-3" href="https://cvsu.edu.ph/"> <i class="fab fa-google"></i></a>|
         <a class="btn btn-dark btn-social mx-3" href="https://www.facebook.com/cvsuagriecopark"> <i class="fab fa-facebook-f"></i></a>|
-        <a class="btn btn-dark btn-social mx-3" href="#!"> <i class="fab fa-instagram"></i></a>
+        <a class="btn btn-dark btn-social mx-3" href="https://www.youtube.com/channel/UC6p5srphejusQzaulrxmtow"> <i class="fab fa-youtube"></i></a>
       </div>
-      <div class="col-lg-4 text-lg-end">
+      <div class="col-lg-4 text-lg-end fa">
         <a class="link-dark text-decoration-none me-3" href="javascript:void(0)" id="p_use">Privacy Policy</a>
         <span>Developed By: <a href="https://cvsu.edu.ph/">CvSU</a></span>
+
       </div>
     </div>
   </div>

@@ -57,7 +57,7 @@ if (!empty($_GET['code']) && isset($_GET['code'])) {
 									<td style='padding:0 0 36px 0;color:#153643;'>
 										<h1 style='font-size:24px;margin:0 0 20px 0;font-family:Arial,sans-serif;'><?php echo htmlentities($msg); ?></h1>
 										<p style='margin:0 0 12px 0;font-size:16px;line-height:24px;font-family:Arial,sans-serif;'></p>
-										<p style='background-color: #0b0c0b; border: none; color: white; padding: 6px 21px; text-align: center; text-decoration: none;display: inline-block; font-size: 16px;'><a href='http://localhost/agri_eco/reservation/' style='color:#ffffff;text-decoration:underline;'>Log in</a></p>
+										<p style='background-color: #0b0c0b; border: none; color: white; padding: 6px 21px; text-align: center; text-decoration: none;display: inline-block; font-size: 16px;'><a href=" <?php echo base_url ?>" style='color:#ffffff;text-decoration:underline;'>Log in</a></p>
 									</td>
 								</tr>
 							</table>
@@ -69,7 +69,7 @@ if (!empty($_GET['code']) && isset($_GET['code'])) {
 								<tr>
 									<td style='padding:0;width:50%;' align='left'>
 										<p style='margin:0;font-size:14px;line-height:16px;font-family:Arial,sans-serif;color:#ffffff;'>
-											&reg; CvSU, Agri-Eco<br /><a href='http://localhost/agri_eco/cvsu_retail/' style='color:#ffffff;text-decoration:underline;'>Visit Us</a>
+											&reg; CvSU, Agri-Eco<br /><a href="<?php echo base_url ?>" style='color:#ffffff;text-decoration:underline;'>Visit Us</a>
 										</p>
 									</td>
 									<td style='padding:0;width:50%;' align='right'>

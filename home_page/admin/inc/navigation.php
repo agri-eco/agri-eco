@@ -35,23 +35,48 @@
                   </p>
                 </a>
               </li>
+              <li class="nav-header">Home Page</li>
+              <li class="nav-item dropdown">
+                <a href="<?php echo base_url ?>admin/?page=announcement" class="nav-link nav-announcement">
+                  <i class="nav-icon fas fa-bullhorn"></i>
+                  <p>
+                    Announcements
+                  </p>
+                </a>
+              </li>
+              <li class="nav-item dropdown">
+                <a href="<?php echo base_url ?>admin/?page=image" class="nav-link nav-image">
+                  <i class="nav-icon fas fa-images"></i>
+                  <p>
+                    Promotion Image
+                  </p>
+                </a>
+              </li>
+              <li class="nav-item dropdown">
+                <a href="<?php echo base_url ?>admin/?page=inquiries" class="nav-link nav-inquiries">
+                  <i class="nav-icon fas fa-question-circle"></i>
+                  <p>
+                    Inquiries
+                  </p>
+                </a>
+              </li>
               <li class="nav-header">Market Settings</li>
               <li class="nav-item dropdown">
-                <a href="<?php echo base_url ?>admin/?page=maintenance/category" class="nav-link nav-maintenance/category">
+                <a href="<?php echo base_url ?>admin/?page=maintenance/category" class="nav-link nav-maintenance">
                   <i class="nav-icon fas fa-th-list"></i>
                   <p>
                     Category List
                   </p>
                 </a>
               </li>
-              <li class="nav-item dropdown">
-                <a href="<?php echo base_url ?>admin/?page=maintenance/sub_category" class="nav-link nav-maintenance/sub_category">
+              <!-- <li class="nav-item dropdown">
+                <a href="<?php echo base_url ?>admin/?page=manage_sub/sub_category" class="nav-link nav-manage_sub">
                   <i class="nav-icon fas fa-th-list"></i>
                   <p>
                     Sub Category List
                   </p>
                 </a>
-              </li>
+              </li> -->
               <li class="nav-item dropdown">
                 <a href="<?php echo base_url ?>admin/?page=product" class="nav-link nav-product">
                   <i class="nav-icon fas fa-book-open"></i>
@@ -117,31 +142,6 @@
                   </p>
                 </a>
               </li>
-              <li class="nav-header">Home Page</li>
-              <li class="nav-item dropdown">
-                <a href="<?php echo base_url ?>admin/?page=announcement" class="nav-link nav-announcement">
-                  <i class="nav-icon fas fa-bullhorn"></i>
-                  <p>
-                    Announcements
-                  </p>
-                </a>
-              </li>
-              <li class="nav-item dropdown">
-                <a href="<?php echo base_url ?>admin/?page=image" class="nav-link nav-image">
-                  <i class="nav-icon fas fa-images"></i>
-                  <p>
-                    Promotion Image
-                  </p>
-                </a>
-              </li>
-              <li class="nav-item dropdown">
-                <a href="<?php echo base_url ?>admin/?page=inquiries" class="nav-link nav-inquiries">
-                  <i class="nav-icon fas fa-question-circle"></i>
-                  <p>
-                    Inquiries
-                  </p>
-                </a>
-              </li>
               <li class="nav-header">Maintenance</li>
               <li class="nav-item dropdown">
                 <a href="<?php echo base_url ?>admin/?page=users" class="nav-link nav-users">
@@ -164,22 +164,6 @@
                   <i class="nav-icon fas fa-cogs"></i>
                   <p>
                     Settings
-                  </p>
-                </a>
-              </li>
-              <li class="nav-item dropdown">
-                <a href="<?php echo base_url ?>../reservation/admin/" class="nav-link nav-system_info_retail">
-                  <i class="nav-icon fa fa-cog"></i>
-                  <p>
-                    Reservation Settings
-                  </p>
-                </a>
-              </li>
-              <li class="nav-item dropdown">
-                <a href="<?php echo base_url ?>../cvsu_retail/admin/" class="nav-link nav-system_info_retail">
-                  <i class="nav-icon fa fa-cog"></i>
-                  <p>
-                    Market Settings
                   </p>
                 </a>
               </li>

@@ -29,6 +29,10 @@ if (isset($_GET['id'])) {
         }
     }
 }
+$act = $conn->query("SELECT * FROM clients ");
+while ($ive = $act->fetch_assoc()) :
+    $lol = $ive['active'];
+endwhile;
 ?>
 <section class="page-section">
     <div class="container">
@@ -57,11 +61,11 @@ if (isset($_GET['id'])) {
 
                     <div>
                         <div class="stars">
-                            <input class="star star-5" id="star-5" type="radio" name="star" <?php echo $rate == 5 ? "checked" : '' ?> /> <label class="star star-5" for="star-5"></label>
-                            <input class="star star-4" id="star-4" type="radio" name="star" <?php echo $rate == 4 ? "checked" : '' ?> /> <label class="star star-4" for="star-4"></label>
-                            <input class="star star-3" id="star-3" type="radio" name="star" <?php echo $rate == 3 ? "checked" : '' ?> /> <label class="star star-3" for="star-3"></label>
-                            <input class="star star-2" id="star-2" type="radio" name="star" <?php echo $rate == 2 ? "checked" : '' ?> /> <label class="star star-2" for="star-2"></label>
-                            <input class="star star-1" id="star-1" type="radio" name="star" <?php echo $rate == 1 ? "checked" : '' ?> /> <label class="star star-1" for="star-1"></label>
+                            <input disabled class="star star-5" id="star-5" type="radio" name="star" <?php echo $rate == 5 ? "checked" : '' ?> /> <label class="star star-5" for="star-5"></label>
+                            <input disabled class="star star-4" id="star-4" type="radio" name="star" <?php echo $rate == 4 ? "checked" : '' ?> /> <label class="star star-4" for="star-4"></label>
+                            <input disabled class="star star-3" id="star-3" type="radio" name="star" <?php echo $rate == 3 ? "checked" : '' ?> /> <label class="star star-3" for="star-3"></label>
+                            <input disabled class="star star-2" id="star-2" type="radio" name="star" <?php echo $rate == 2 ? "checked" : '' ?> /> <label class="star star-2" for="star-2"></label>
+                            <input disabled class="star star-1" id="star-1" type="radio" name="star" <?php echo $rate == 1 ? "checked" : '' ?> /> <label class="star star-1" for="star-1"></label>
                         </div>
                     </div>
                     <hr>
@@ -100,18 +104,29 @@ if (isset($_GET['id'])) {
     </div>
 </section>
 <script>
+    var lol = $.parseJSON('<?php echo json_encode($lol) ?>');
+
     $(function() {
         $('#book').click(function() {
-            if ("<?php echo $_settings->userdata('id') ?>" > 0)
-                uni_modal("Book Info", "book_form.php?id=<?php echo $id ?>");
-            else
+
+            if ('<?php echo $_settings->userdata('id') ?>' <= 0) {
                 uni_modal("", "login.php");
+                return false;
+
+            }
+            if (lol == 0) {
+                uni_modal("", "verify.php");
+                return false;
+            } else {
+                uni_modal("Book Info", "book_form.php?id=<?php echo $id ?>");
+            }
         })
     })
 
     $(document).ready(function() {
         $('#package-form').submit(function(e) {
             e.preventDefault();
+
             $('.err-msg').remove();
             start_loader();
             $.ajax({

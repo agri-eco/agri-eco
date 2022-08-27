@@ -48,7 +48,7 @@ class Login extends DBConnection
 		$qry = $this->conn->query("SELECT * from clients where email = '$email' and password = md5('$password')");
 		if ($qry->num_rows > 0) {
 			foreach ($qry->fetch_array() as $k => $v) {
-				$qry1 = $this->conn->query("SELECT * from clients where email = '$email' and password = md5('$password') and active = 1");
+				$qry1 = $this->conn->query("SELECT * from clients where email = '$email' and password = md5('$password')");
 				if ($qry1->num_rows > 0) {
 					foreach ($qry1->fetch_array() as $k => $v) {
 						$this->settings->set_userdata($k, $v);

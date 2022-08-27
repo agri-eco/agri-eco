@@ -79,14 +79,21 @@ class Master extends DBConnection
 	function delete_category()
 	{
 		extract($_POST);
-		$del = $this->conn->query("DELETE FROM `categories` where id = '{$id}'");
-		if ($del) {
-			$resp['status'] = 'success';
-			$this->settings->set_flashdata('success', "Category successfully deleted.");
+		$del_prod = $this->conn->query("DELETE FROM `products` where category_id = '{$id}'");
+		if ($del_prod) {
+			$del = $this->conn->query("DELETE FROM `categories` where id = '{$id}'");
+			if ($del) {
+				$resp['status'] = 'success';
+				$this->settings->set_flashdata('success', "Category successfully deleted.");
+			} else {
+				$resp['status'] = 'failed';
+				$resp['error'] = $this->conn->error;
+			}
 		} else {
 			$resp['status'] = 'failed';
 			$resp['error'] = $this->conn->error;
 		}
+
 		return json_encode($resp);
 	}
 
@@ -402,23 +409,8 @@ class Master extends DBConnection
 	}
 	function place_order()
 	{
-		// extract($_POST);
-		// $data = "";
-		// $client_id = $this->settings->userdata('id');
-		// $_POST['client_id'] = $client_id;
-		// foreach($_POST as $k =>$v){
-		// 		if(!empty($data)) $data .=",";
-		// 			$data .= " `{$k}`='{$v}' ";
-		// }
-		// // $data = " client_id = '{$client_id}' ";
-		// // $data .= " ,amount = '{$amount}' ";
-		// // $data .= " ,payment_method = '{$payment_method}' ";
-		// // $data .= " ,paid = '{$paid}' ";
-		// // $data .= " ,order_type = '{$order_type}' ";
-		// // $data .= " ,delivery_address = '{$delivery_address}' ";
-		// $order_sql = "INSERT INTO `orders` set {$data}";
-		// $save_order = $this->conn->query($order_sql);
 		extract($_POST);
+
 		$client_id = $this->settings->userdata('id');
 		$data = " client_id = '{$client_id}' ";
 		$data .= " ,amount = '{$amount}' ";
@@ -426,6 +418,10 @@ class Master extends DBConnection
 		$data .= " ,paid = '{$paid}' ";
 		$data .= " ,order_type = '{$order_type}' ";
 		$data .= " ,delivery_address = '{$delivery_address}' ";
+		$data .= " ,province = '{$province}' ";
+		$data .= " ,barangay = '{$barangay}' ";
+		$data .= " ,city = '{$city}' ";
+
 		// 		$order_sql = "INSERT INTO `orders` set {$data}";
 		// 		$save_order = $this->conn->query($order_sql);
 		$order_sql = "INSERT INTO `orders` set {$data} ";
@@ -436,7 +432,9 @@ class Master extends DBConnection
 		if ($save_order) {
 			$order_id = $this->conn->insert_id;
 			$data = '';
-			$cart = $this->conn->query("SELECT c.*,p.product_name,i.price,p.id as pid from `cart` c inner join `inventory` i on i.id=c.inventory_id inner join products p on p.id = i.product_id where c.client_id ='{$client_id}' ");
+			$cid = ($_POST['id']);
+			$where = " c.id in (" . implode(",", $cid) . ") and ";
+			$cart = $this->conn->query("SELECT c.*,p.product_name,i.price,p.id as pid from `cart` c inner join `inventory` i on i.id=c.inventory_id inner join products p on p.id = i.product_id where {$where} c.client_id ='{$client_id}' ");
 			while ($row = $cart->fetch_assoc()) :
 				if (!empty($data)) $data .= ", ";
 				$total = $row['price'] * $row['quantity'];
@@ -446,39 +444,13 @@ class Master extends DBConnection
 			$save_olist = $this->conn->query($list_sql);
 			if ($this->capture_err())
 				return $this->capture_err();
-			// if($save_olist){
-			// 	$slct=$this->conn->query("SELECT c.*,count(c.id) as cid, i.quantity as q from inventory i inner join cart c on i.id=c.inventory_id inner join products p on p.id = i.product_id where i.product_id = i.id  ");
-			// 	while($row= $slct->fetch_assoc()):
-			// 		$lol=$row['cid'];
-
-			// 	// for($i=0; $i<$lol;$i++) {	
-			// 	$qnty = $row['q'] - $row['quantity'];
-
-			// 	// }
-			// 	endwhile;
-			// 	// $add = array($lol);
-			// 	// count($add);
-			// 	// for($i=0; $i<$add;$i++) {
-			// 	// 	$sql = $this->conn->query("UPDATE inventory i inner join cart c set i.quantity = {$add[0]}  ");	
-			// 	// }
-			// 	// $add1 = array($qnty);
-
-			// 	// $count=sizeof();
-
-			// 		// for($i=0; $i<$client_id; $i++) {
-			// 			// }
-
-
-			// 	// $update = $this->conn->query("UPDATE `inventory` set quantity = '{$qnty}' where id = '{$product_id}'");
-			// 	// $update = "UPDATE `inventory` set 'quantity' = {$qnty} ";
-			// 	// $save = $this->conn->query($update);
-
-			// }
 			if ($save_olist) {
-				$empty_cart = $this->conn->query("DELETE FROM `cart` where client_id = '{$client_id}'");
+				$cid = ($_POST['id']);
+				$where = " id in (" . implode(",", $cid) . ") and ";
+				$empty_cart = $this->conn->query("DELETE FROM `cart` where {$where} client_id = '{$client_id}'");
 				$data = " order_id = '{$order_id}'";
 				$data .= " ,total_amount = '{$amount}'";
-				$save_sales = $this->conn->query("INSERT INTO `sales` set $data");
+				$save_sales = $this->conn->query("INSERT INTO `sales` set $data ");
 				if ($this->capture_err())
 					return $this->capture_err();
 				$resp['status'] = 'success';
@@ -825,39 +797,23 @@ class Master extends DBConnection
 		}
 		return json_encode($resp);
 	}
-	function register()
+	function verify()
 	{
 		extract($_POST);
 		$data = "";
-		$_POST['password'] = md5($password);
 		foreach ($_POST as $k => $v) {
 			if (!empty($data)) $data .= ",";
 			$data .= " `{$k}`='{$v}' ";
 		}
-		$check = $this->conn->query("SELECT * FROM `clients` where firstname='{$firstname}' ")->num_rows;
-		if ($check > 0) {
-			$resp['status'] = 'failed';
-			$resp['msg'] = "Username already taken.";
-			return json_encode($resp);
-			exit;
-		}
-		$data = " firstname = '{$firstname}' ";
-		$data .= " ,lastname = '{$lastname}' ";
-		$data .= " ,contact = '{$contact}' ";
-		$data .= " ,gender = '{$gender}' ";
-		$data .= " ,email = '{$email}' ";
-		$notmdpass = $password;
-		$password = md5($password);
-		$data .= " ,password = '{$password}' ";
-		$data .= " ,default_delivery_address = '{$default_delivery_address}' ";
-		$set = '1234567890';
-		$code = substr(str_shuffle($set), 0, 5);
-		$data .= " ,code = '{$code}' ";
-		$active = false;
-		$data .= " ,active = '{$active}' ";
-		$save = $this->conn->query("INSERT INTO `clients` set $data ");
-		if ($save) {
 
+		$check = $this->conn->query("SELECT * FROM `clients` where email='{$email}' ")->num_rows;
+		if ($check > 0) {
+			$info = $this->conn->query("SELECT * from `clients` where email ='{$email}' ");
+			while ($row = $info->fetch_assoc()) :
+				if (!empty($data)) $data .= ", ";
+				$firstname = "{$row['firstname']}";
+				$code = "{$row['code']}";
+			endwhile;
 			require_once "PHPMailer/PHPMailer.php";
 			require_once "PHPMailer/SMTP.php";
 			require_once "PHPMailer/Exception.php";
@@ -887,21 +843,13 @@ class Master extends DBConnection
 							  <td style='padding:0 0 36px 0;color:#153643;'>
 								<h1 style='font-size:24px;margin:0 0 20px 0;font-family:Arial,sans-serif;'>Hello, " . $firstname . "</h1>
 								<p style='margin:0 0 12px 0;font-size:16px;line-height:24px;font-family:Arial,sans-serif;'>Please click the button below to verify your email address.</p>
-								<p style='background-color: #0b0c0b; border: none; color: white; padding: 6px 21px; text-align: center; text-decoration: none;display: inline-block; font-size: 16px;'><a href='" . base_url . "emailverify/email_verification.php?code=$code' style='color:#ffffff;text-decoration:underline;'>Click Here</a></p>
-							  </td>
+									<p style='background-color: #0b0c0b; border: none; color: white; padding: 6px 21px; text-align: center; text-decoration: none;display: inline-block; font-size: 16px;'><a href='" . base_url . "emailverify/email_verification.php?code=$code' style='color:#ffffff;text-decoration:underline;'>Click Here</a></p>
+								  </td>
 							</tr>
 							<tr>
 							  <td style='padding:0;'>
 								<table role='presentation' style='width:100%;border-collapse:collapse;border:0;border-spacing:0;'>
-								  <tr>
-									<td style='width:260px;padding:0;vertical-align:top;color:#153643;'>
-									  <p style='margin:0 0 12px 0;font-size:16px;line-height:24px;font-family:Arial,sans-serif;'>Email: " . $email . "</p>
-									</td>
-									<td style='width:20px;padding:0;font-size:0;line-height:0;'>&nbsp;</td>
-									<td style='width:260px;padding:0;vertical-align:top;color:#153643;'>
-									  <p style='margin:0 0 12px 0;font-size:16px;line-height:24px;font-family:Arial,sans-serif;'>Password: " . $notmdpass . "</p>
-									</td>
-								  </tr>
+								  
 								</table>
 							  </td>
 							</tr>
@@ -941,8 +889,8 @@ class Master extends DBConnection
 			$mail->isSMTP();
 			$mail->Host = "smtp.gmail.com";
 			$mail->SMTPAuth = true;
-			$mail->Username = "try.acc1two3@gmail.com";
-			$mail->Password = 'uvjwbxfcwvpuxjjn';
+			$mail->Username = "youremail.lalala";
+			$mail->Password = 'yourpassword';
 			$mail->Port = 465; //587
 			$mail->SMTPSecure = "ssl"; //tls
 
@@ -950,7 +898,7 @@ class Master extends DBConnection
 
 			//Email Settings
 			$mail->isHTML(true);
-			$mail->setFrom($email, 'noreply');
+			$mail->setFrom('youremail.lalala', 'noreply');
 			$mail->addAddress($email);
 			$mail->Subject = $subject;
 			$mail->Body = $message;
@@ -961,37 +909,183 @@ class Master extends DBConnection
 				$status = "failed";
 				$response = "Something is wrong: <br><br>" . $mail->ErrorInfo;
 			}
+			$resp['status'] = 'success';
+		} else if ($check > 0) {
+			$resp['status'] = 'failed';
+			$resp['msg'] = "Email Not Found.";
+			return json_encode($resp);
+			exit;
+		} else {
+			$resp['status'] = 'failed';
+			$resp['error'] = $this->conn->error;
+		}
+		return json_encode($resp);
+	}
 
-			// 			$to=$email;	  
-			// 			$msg= "Thanks for new Registration.";   
+	function register()
+	{
+		extract($_POST);
+		$data = "";
+		$_POST['password'] = md5($password);
+		foreach ($_POST as $k => $v) {
+			if (!empty($data)) $data .= ",";
+			$data .= " `{$k}`='{$v}' ";
+		}
+		$check = $this->conn->query("SELECT * FROM `clients` where `email` = '{$email}' " . (!empty($id) ? " and id != {$id} " : "") . " ")->num_rows;
 
-			// $subject="Email verification";
-
-			// $headers = "MIME-Version: 1.0"."\r\n";
-
-			// $headers .= 'Content-type: text/html; charset=iso-8859-1'."\r\n";
-
-			// $headers .= 'From: CvSU Retail Market'."\r\n";
-
-
-
-			// $ms="<html></body><div><div>Dear $firstname,</div></br></br>";
-
-			// $ms.="<div style='padding-top:8px;'>Please click The following link For verifying and activation of your account</div>
-			// <div style='padding-top:10px;'><a href='".base_url."emailverify/email_verification.php?code=$code'>Click Here</a></div>
-
-
-			// </body></html>";
-
-			// mail($to,$subject,$ms,$headers);
-
+		if ($this->capture_err())
+			return $this->capture_err();
+		if ($check > 0) {
+			$resp['status'] = 'failed';
+			$resp['msg'] = "Email already taken.";
+			return json_encode($resp);
+			exit;
+		}
+		if (empty($id)) {
+			$set = '1234567890abcdefghijklmnopqrstuvwxyz';
+			$code = substr(str_shuffle($set), 0, 20);
+			$data .= " ,code = '{$code}' ";
+			$sql = "INSERT INTO `clients` set {$data} ";
+			$save = $this->conn->query($sql);
+			$id = $this->conn->insert_id;
+		} else {
+			$sql = "UPDATE `clients` set {$data} where id = '{$id}' ";
+			$save = $this->conn->query($sql);
 		}
 		if ($save) {
-			// foreach($_POST as $k =>$v){
-			// 	$this->settings->set_userdata($k,$v);
-			// }
-			// $this->settings->set_userdata('id',$this->conn->insert_id);
 			$resp['status'] = 'success';
+			if (empty($id))
+				$this->settings->set_flashdata('success', "Account successfully created.");
+			else
+				$this->settings->set_flashdata('success', "Account successfully updated.");
+			foreach ($_POST as $k => $v) {
+				$this->settings->set_userdata($k, $v);
+			}
+			$this->settings->set_userdata('id', $id);
+		} else {
+			$resp['status'] = 'failed';
+			$resp['err'] = $this->conn->error . "[{$sql}]";
+		}
+		return json_encode($resp);
+	}
+	function sendotp()
+	{
+		extract($_POST);
+		$data = "";
+		foreach ($_POST as $k => $v) {
+			if (!empty($data)) $data .= ",";
+			$data .= " `{$k}`='{$v}' ";
+		}
+
+		$check = $this->conn->query("SELECT * FROM `clients` where email='{$email}' ")->num_rows;
+		if ($check > 0) {
+			$info = $this->conn->query("SELECT * from `clients` where email ='{$email}' ");
+			while ($row = $info->fetch_assoc()) :
+				if (!empty($data)) $data .= ", ";
+				$firstname = "{$row['firstname']}";
+				$code = "{$row['code']}";
+			endwhile;
+			require_once "PHPMailer/PHPMailer.php";
+			require_once "PHPMailer/SMTP.php";
+			require_once "PHPMailer/Exception.php";
+
+			$mail = new PHPMailer();
+			$subject = "Email verification";
+			$message = 	"
+			<html lang='en' xmlns='http://www.w3.org/1999/xhtml' xmlns:o='urn:schemas-microsoft-com:office:office'>
+			<head>
+			  <meta charset='UTF-8'>
+			  <meta name='viewport' content='width=device-width,initial-scale=1'>
+			  <meta name='x-apple-disable-message-reformatting'>
+			  <title></title>
+			  <style>
+				table, td, div, h1, p {font-family: Arial, sans-serif;}
+			  </style>
+			</head>
+			<body style='margin:0;padding:0;'>
+			  <table role='presentation' style='width:100%;border-collapse:collapse;border:0;border-spacing:0;background:#ffffff;'>
+				<tr>
+				  <td align='center' style='padding:0;'>
+					<table role='presentation' style='width:602px;border-collapse:collapse;border:1px solid #cccccc;border-spacing:0;text-align:left;'>
+					  <tr>
+						<td style='padding:36px 30px 42px 30px;'>
+						  <table role='presentation' style='width:100%;border-collapse:collapse;border:0;border-spacing:0;'>
+							<tr>
+							  <td style='padding:0 0 36px 0;color:#153643;'>
+								<h1 style='font-size:24px;margin:0 0 20px 0;font-family:Arial,sans-serif;'>Hello, " . $firstname . "</h1>
+								<p style='margin:0 0 12px 0;font-size:16px;line-height:24px;font-family:Arial,sans-serif;'>Please click the button below to change your password.</p>
+								<p style='background-color: #0b0c0b; border: none; color: white; padding: 6px 21px; text-align: center; text-decoration: none;display: inline-block; font-size: 16px;'><a href='" . base_url . ".?p=editpass&code=$code' style='color:#ffffff;text-decoration:underline;'>Click Here</a></p>
+							  </td>
+							</tr>
+							<tr>
+							  <td style='padding:0;'>
+								<table role='presentation' style='width:100%;border-collapse:collapse;border:0;border-spacing:0;'>
+								  
+								</table>
+							  </td>
+							</tr>
+						  </table>
+						</td>
+					  </tr>
+					  <tr>
+						<td style='padding:30px;background:#ee4c50;'>
+						  <table role='presentation' style='width:100%;border-collapse:collapse;border:0;border-spacing:0;font-size:9px;font-family:Arial,sans-serif;'>
+							<tr>
+							  <td style='padding:0;width:50%;' align='left'>
+								<p style='margin:0;font-size:14px;line-height:16px;font-family:Arial,sans-serif;color:#ffffff;'>
+								  &reg; CvSU, Agri-Eco<br/><a href='" . base_url . "' style='color:#ffffff;text-decoration:underline;'>Visit Us</a>
+								</p>
+							  </td>
+							  <td style='padding:0;width:50%;' align='right'>
+								<table role='presentation' style='border-collapse:collapse;border:0;border-spacing:0;'>
+								  <tr>
+									<td style='padding:0 0 0 10px;width:38px;'>
+									  <a href='https://www.facebook.com/cvsuagriecopark' style='color:#ffffff;'><img src='https://assets.codepen.io/210284/fb_1.png' alt='Facebook' width='38' style='height:auto;display:block;border:0;' /></a>
+									</td>
+								  </tr>
+								</table>
+							  </td>
+							</tr>
+						  </table>
+						</td>
+					  </tr>
+					</table>
+				  </td>
+				</tr>
+			  </table>
+			</body>
+			</html>
+							";
+			//SMTP Settings
+			$mail->isSMTP();
+			$mail->Host = "smtp.gmail.com";
+			$mail->SMTPAuth = true;
+			$mail->Username = "youremail.lalala";
+			$mail->Password = 'yourpassword';
+			$mail->Port = 465; //587
+			$mail->SMTPSecure = "ssl"; //tls
+
+
+
+			//Email Settings
+			$mail->isHTML(true);
+			$mail->setFrom('youremail.lalala', 'noreply');
+			$mail->addAddress($email);
+			$mail->Subject = $subject;
+			$mail->Body = $message;
+			if ($mail->send()) {
+				$status = "success";
+				$response = "Email is sent!";
+			} else {
+				$status = "failed";
+				$response = "Something is wrong: <br><br>" . $mail->ErrorInfo;
+			}
+			$resp['status'] = 'success';
+		} else if ($check > 0) {
+			$resp['status'] = 'failed';
+			$resp['msg'] = "Email Not Found.";
+			return json_encode($resp);
+			exit;
 		} else {
 			$resp['status'] = 'failed';
 			$resp['error'] = $this->conn->error;
@@ -1075,6 +1169,30 @@ class Master extends DBConnection
 			$resp['status'] = 'failed';
 			$resp['error'] = $this->conn->error;
 		}
+		return json_encode($resp);
+	}
+	function passforgot()
+	{
+		extract($_POST);
+		$cpass = $cpassword;
+		$pass = $password;
+		if ($cpass != $pass) {
+			$resp['status'] = 'failed';
+			$resp['msg'] = "Password do not match";
+			return json_encode($resp);
+			exit;
+		} else {
+			$password = md5($password);
+			$update = $this->conn->query("UPDATE `clients` set `password` = '{$password}' where code ='{$code}' ");
+			if ($update) {
+				$resp['status'] = 'success';
+				$this->settings->set_flashdata('success', "Password successfully change.");
+			} else {
+				$resp['status'] = 'failed';
+				$resp['error'] = $this->conn->error;
+			}
+		}
+
 		return json_encode($resp);
 	}
 
@@ -1238,7 +1356,7 @@ class Master extends DBConnection
 		$del = $this->conn->query("DELETE FROM `clients` where id='{$_POST['id']}'");
 		if ($del) {
 			$resp['status'] = 'success';
-			$this->settings->set_flashdata("success", "Admin Deleted.");
+			$this->settings->set_flashdata("success", "Client Deleted.");
 		} else {
 			$resp['status'] = 'failed';
 			$resp['error'] = $this->conn->error;
@@ -1377,6 +1495,15 @@ switch ($action) {
 		break;
 	case 'save_category':
 		echo $Master->save_category();
+		break;
+	case 'sendotp':
+		echo $Master->sendotp();
+		break;
+	case 'passforgot':
+		echo $Master->passforgot();
+		break;
+	case 'verify':
+		echo $Master->verify();
 		break;
 
 	default:

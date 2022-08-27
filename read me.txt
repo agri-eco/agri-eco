@@ -1,0 +1,9 @@
+gawa kayo database: agri_eco_db
+http://localhost/agri_eco/home_page
+
+
+
+email at pass ng admin
+http://localhost/agri_eco/home_page/admin
+email:admin
+pass:admin123

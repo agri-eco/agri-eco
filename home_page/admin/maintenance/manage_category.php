@@ -10,7 +10,7 @@ if (isset($_GET['id']) && $_GET['id'] > 0) {
 ?>
 <div class="card card-outline card-info">
 	<div class="card-header">
-		<h3 class="card-title"><?php echo isset($id) ? "Update " : "Create New " ?> Category</h3>
+		<h3 class="card-title"><?php echo isset($id) ? "Update " : "Create New " ?> Catgory</h3>
 	</div>
 	<div class="card-body">
 		<form action="" id="category-form">
@@ -19,10 +19,10 @@ if (isset($_GET['id']) && $_GET['id'] > 0) {
 				<label for="category" class="control-label">Category Name</label>
 				<textarea name="category" id="" cols="30" rows="2" class="form-control form no-resize"><?php echo isset($category) ? $category : ''; ?></textarea>
 			</div>
-			<div class="form-group">
+			<!-- <div class="form-group">
 				<label for="description" class="control-label">Description</label>
 				<textarea name="description" id="" cols="30" rows="2" class="form-control form no-resize summernote"><?php echo isset($description) ? $description : ''; ?></textarea>
-			</div>
+			</div> -->
 			<div class="form-group">
 				<label for="status" class="control-label">Status</label>
 				<select name="status" id="status" class="custom-select selevt">

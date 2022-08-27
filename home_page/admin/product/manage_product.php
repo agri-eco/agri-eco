@@ -27,19 +27,7 @@ if (isset($_GET['id']) && $_GET['id'] > 0) {
                     <?php endwhile; ?>
                 </select>
             </div>
-            <div class="form-group">
-                <label for="sub_category_id" class="control-label">Sub Category</label>
-                <select name="sub_category_id" id="sub_category_id" class="custom-select" required>
-                    <option value="" selected="" disabled="">Select Category First</option>
-                    <?php
-                    $qry = $conn->query("SELECT * FROM `sub_categories` where status='1' order by sub_category asc");
-                    $sub_categories = array();
-                    while ($row = $qry->fetch_assoc()) :
-                        $sub_categories[$row['parent_id']][] = $row;
-                    endwhile;
-                    ?>
-                </select>
-            </div>
+
             <div class="form-group">
                 <label for="department" class="control-label">Manufacturer</label>
 
@@ -138,7 +126,7 @@ if (isset($_GET['id']) && $_GET['id'] > 0) {
             }
         })
     }
-    var sub_categories = $.parseJSON('<?php echo json_encode($sub_categories) ?>');
+
     $(document).ready(function() {
         $('.rem_img').click(function() {
             _conf("Are sure to delete this image permanently?", 'delete_img', ["'" + $(this).attr('data-path') + "'"])
@@ -146,27 +134,6 @@ if (isset($_GET['id']) && $_GET['id'] > 0) {
 
         $('#category_id').change(function() {
             var cid = $(this).val()
-            var opt = "<option></option>";
-            Object.keys(sub_categories).map(k => {
-                if (k == cid) {
-                    Object.keys(sub_categories[k]).map(i => {
-                        if ('<?php echo isset($sub_category_id) ? $sub_category_id : 0 ?>' == sub_categories[k][i].id) {
-                            opt += "<option value='" + sub_categories[k][i].id + "' selected>" + sub_categories[k][i].sub_category + "</option>";
-                        } else {
-                            opt += "<option value='" + sub_categories[k][i].id + "'>" + sub_categories[k][i].sub_category + "</option>";
-                        }
-                    })
-                }
-            })
-            $('#sub_category_id').html(opt)
-            $('#sub_category_id').select2({
-                placeholder: "Please Select here",
-                width: "relative"
-            })
-        })
-        $('.select2').select2({
-            placeholder: "Please Select here",
-            width: "relative"
         })
         if (parseInt("<?php echo isset($category_id) ? $category_id : 0 ?>") > 0) {
             console.log('test')

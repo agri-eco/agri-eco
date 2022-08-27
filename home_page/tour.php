@@ -136,7 +136,7 @@
             border-radius: 20px;
             visibility: hidden;
             opacity: 0;
-            transition: 1s;
+            transition: .5s;
             transform: translateX(-50%) translateY(-50px);
         }
 
@@ -449,99 +449,99 @@
 <script>
     // Pop-up Coordinates
     var d = document.getElementById('kubo');
-    d.style.position = "absolute";
+    d.style.position = "fixed";
     d.style.left = 50 + '%';
-    d.style.bottom = 50 + '%';
+    d.style.bottom = 0 + '%';
 
     var d = document.getElementById('bee');
-    d.style.position = "absolute";
+    d.style.position = "fixed";
     d.style.left = 50 + '%';
-    d.style.bottom = 50 + '%';
+    d.style.bottom = 0 + '%';
 
     var d = document.getElementById('bridge');
-    d.style.position = "absolute";
+    d.style.position = "fixed";
     d.style.left = 50 + '%';
-    d.style.bottom = 50 + '%';
+    d.style.bottom = 0 + '%';
 
     var d = document.getElementById('hagdan');
-    d.style.position = "absolute";
+    d.style.position = "fixed";
     d.style.left = 50 + '%';
-    d.style.bottom = 50 + '%';
+    d.style.bottom = 0 + '%';
 
     var d = document.getElementById('gate');
-    d.style.position = "absolute";
+    d.style.position = "fixed";
     d.style.left = 50 + '%';
-    d.style.bottom = 50 + '%';
+    d.style.bottom = 0 + '%';
 
     var d = document.getElementById('parking');
-    d.style.position = "absolute";
+    d.style.position = "fixed";
     d.style.left = 50 + '%';
-    d.style.bottom = 50 + '%';
+    d.style.bottom = 0 + '%';
 
     var d = document.getElementById('lagoon');
-    d.style.position = "absolute";
+    d.style.position = "fixed";
     d.style.left = 50 + '%';
-    d.style.bottom = 50 + '%';
+    d.style.bottom = 0 + '%';
 
     var d = document.getElementById('charms');
-    d.style.position = "absolute";
+    d.style.position = "fixed";
     d.style.left = 50 + '%';
-    d.style.bottom = 50 + '%';
+    d.style.bottom = 0 + '%';
 
     var d = document.getElementById('sprint');
-    d.style.position = "absolute";
+    d.style.position = "fixed";
     d.style.left = 50 + '%';
-    d.style.bottom = 50 + '%';
+    d.style.bottom = 0 + '%';
 
     var d = document.getElementById('livestock');
-    d.style.position = "absolute";
+    d.style.position = "fixed";
     d.style.left = 50 + '%';
-    d.style.bottom = 50 + '%';
+    d.style.bottom = 0 + '%';
 
     var d = document.getElementById('ornamental');
-    d.style.position = "absolute";
+    d.style.position = "fixed";
     d.style.left = 50 + '%';
-    d.style.bottom = 50 + '%';
+    d.style.bottom = 0 + '%';
 
     var d = document.getElementById('aviary');
-    d.style.position = "absolute";
+    d.style.position = "fixed";
     d.style.left = 50 + '%';
-    d.style.bottom = 50 + '%';
+    d.style.bottom = 0 + '%';
 
     var d = document.getElementById('villa');
-    d.style.position = "absolute";
+    d.style.position = "fixed";
     d.style.left = 50 + '%';
-    d.style.bottom = 50 + '%';
+    d.style.bottom = 0 + '%';
 
     var d = document.getElementById('dragonfruit');
-    d.style.position = "absolute";
+    d.style.position = "fixed";
     d.style.left = 50 + '%';
-    d.style.bottom = 50 + '%';
+    d.style.bottom = 0 + '%';
 
     var d = document.getElementById('macapuno');
-    d.style.position = "absolute";
+    d.style.position = "fixed";
     d.style.left = 50 + '%';
-    d.style.bottom = 50 + '%';
+    d.style.bottom = 0 + '%';
 
     var d = document.getElementById('fishery');
-    d.style.position = "absolute";
+    d.style.position = "fixed";
     d.style.left = 50 + '%';
-    d.style.bottom = 50 + '%';
+    d.style.bottom = 0 + '%';
 
     var d = document.getElementById('ecotrail');
-    d.style.position = "absolute";
+    d.style.position = "fixed";
     d.style.left = 50 + '%';
-    d.style.bottom = 50 + '%';
+    d.style.bottom = 0 + '%';
 
     var d = document.getElementById('central');
-    d.style.position = "absolute";
+    d.style.position = "fixed";
     d.style.left = 50 + '%';
-    d.style.bottom = 50 + '%';
+    d.style.bottom = 0 + '%';
 
     var d = document.getElementById('ncrdec');
-    d.style.position = "absolute";
+    d.style.position = "fixed";
     d.style.left = 50 + '%';
-    d.style.bottom = 50 + '%';
+    d.style.bottom = 0 + '%';
 </script>
 
 
